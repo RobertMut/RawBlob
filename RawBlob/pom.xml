@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-bom</artifactId>
-      <version>1.2.1</version>
+      <version>1.2.2</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
@@ -40,17 +40,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.1</version>
+      <version>1.5.2</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.17.0</version>
+      <version>12.17.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.28.0</version>
+      <version>1.29.1</version>
     </dependency>
     <dependency>
       <groupId>org.reflections</groupId>

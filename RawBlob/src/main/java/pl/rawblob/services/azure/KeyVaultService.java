@@ -16,8 +16,6 @@ public class KeyVaultService implements IKeyVaultService {
 
     private SecretClient secretClient;
     private String azureStorage;
-    private String sasToken;
-
 
     @Autowired
     public KeyVaultService(String keyVaultUri){
@@ -28,7 +26,6 @@ public class KeyVaultService implements IKeyVaultService {
                 .serviceVersion(SecretServiceVersion.getLatest())
                 .buildClient();
         azureStorage = secretClient.getSecret("azureStorage").getValue();
-        sasToken = secretClient.getSecret("sasToken").getValue();
     }
 
     @Override
@@ -36,8 +33,4 @@ public class KeyVaultService implements IKeyVaultService {
         return azureStorage;
     }
 
-    @Override
-    public String getSasToken() {
-        return sasToken;
-    }
 }

@@ -1,8 +1,14 @@
 package pl.rawblob.services.azure;
 
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobListDetails;
+import com.azure.storage.blob.models.ListBlobsOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.rawblob.annotations.Command;
@@ -12,40 +18,48 @@ import pl.rawblob.entities.Blob;
 import pl.rawblob.interfaces.services.azure.IBlobService;
 import pl.rawblob.interfaces.services.azure.IKeyVaultService;
 import pl.rawblob.entities.BlobListItem;
+import pl.rawblob.services.CommandService;
 
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class BlobService implements IBlobService {
+    private final static Logger LOGGER = LoggerFactory.getLogger(CommandService.class);
     private IKeyVaultService keyVaultService;
     private BlobContainerClient blobContainerClient;
 
     @Autowired
     public BlobService(IKeyVaultService keyVaultService) {
         this.keyVaultService = keyVaultService;
+
         this.blobContainerClient = new BlobContainerClientBuilder()
-                .connectionString(keyVaultService.getAzureStorage())
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .containerName("items")
-                .sasToken(keyVaultService.getSasToken())
+                .connectionString(keyVaultService.getAzureStorage())
                 .buildClient();
     }
 
     @Override
     public BlobsListDto GetBlobs() {
-        var blobs = blobContainerClient.listBlobs();
-        var k = keyVaultService.getAzureStorage();
-        var s = keyVaultService.getSasToken();
+        List<BlobListItem> blobArrayList = new ArrayList<BlobListItem>();
+        try {
+            blobContainerClient.listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveMetadata(true)), Duration.ofSeconds(30))
+                    .forEach(blobItem -> {
+                        var blob = blobItem;
+                        var blobListItem = new BlobListItem(blob.getName(), blob.getProperties().getContentLength(), blob.getProperties().getCreationTime().toString());
 
-        if (blobs.stream().count() == 0) return new BlobsListDto(null);
+                        blobArrayList.add(blobListItem);
+            });
+        }
+        catch (Exception e){
+            LOGGER.error(e.toString());
+        }
 
-        var blobList = blobs.stream().map(blob ->
-        {
-            var properties = blob.getProperties();
-            return new BlobListItem(blob.getName(), properties.getContentLength(), properties.getCreationTime().toString());
-        }).collect(Collectors.toList());
-
-        return new BlobsListDto(blobList);
+        return new BlobsListDto(blobArrayList);
     }
 
     @Override
