@@ -1,5 +1,7 @@
 package pl.rawblob.dtos;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Message dto
  */
@@ -7,7 +9,8 @@ public class Message {
     /**
      * Message string
      */
-    public final String Message;
+    @SerializedName("Message")
+    public String Message;
 
     /**
      * Constructs message
@@ -15,5 +18,14 @@ public class Message {
      */
     public Message(String message){
         this.Message = message;
+    }
+
+    //Getters and setters
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        Message = message;
     }
 }
