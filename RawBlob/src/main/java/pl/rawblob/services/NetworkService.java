@@ -4,15 +4,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.rawblob.Bootstrapper;
 import pl.rawblob.interfaces.services.IClientService;
 import pl.rawblob.interfaces.services.INetworkService;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * NetworkService class
+ */
 @Component
 public class NetworkService implements INetworkService {
 
@@ -21,6 +24,13 @@ public class NetworkService implements INetworkService {
     private InetSocketAddress address;
     private IClientService clientService;
 
+    /**
+     * Constructs NetworkService
+     * @param listenPort port to be listened
+     * @param listenAddress address to be listened
+     * @param clientService client service
+     * @see ClientService
+     */
     @Autowired
     public void NetworkService(String listenPort, String listenAddress, IClientService clientService){
         this.clientService = clientService;
@@ -37,6 +47,10 @@ public class NetworkService implements INetworkService {
         }
     }
 
+    /**
+     * Waits for incoming connection
+     * @implSpec Runs CompletableFuture when client connected
+     */
     @Override
     public void listen(){
         try
@@ -46,13 +60,13 @@ public class NetworkService implements INetworkService {
                 Socket acceptSocket = this.socket.accept();
                 CompletableFuture.runAsync(() -> {
                     LOGGER.info("Client connected "+ acceptSocket.getRemoteSocketAddress());
-                    clientService.Manage(acceptSocket);
+                    clientService.manage(acceptSocket);
                 });
             }
         }
         catch (IOException ioException)
         {
-
+            LOGGER.error(ioException.getMessage());
         }
     }
 

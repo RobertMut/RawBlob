@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.0829145728643216" maxHeight="400" maxWidth="600" minHeight="400" minWidth="600" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <HBox prefHeight="30.0" prefWidth="600.0">
+               <children>
+                  <Button fx:id="refresh" mnemonicParsing="false" onAction="#onRefresh" text="Refresh">
+                     <HBox.margin>
+                        <Insets left="30.0" right="50.0" top="2.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onDownload" text="Download">
+                     <HBox.margin>
+                        <Insets left="50.0" right="50.0" top="2.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onUpload" text="Upload">
+                     <HBox.margin>
+                        <Insets left="50.0" right="50.0" top="2.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" text="Delete" onAction="#onDelete">
+                     <HBox.margin>
+                        <Insets left="50.0" right="30.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children></AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <TableView fx:id="tableView" prefWidth="600.0">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+               <columns>
+                   <TableColumn fx:id="blobName" prefWidth="75.0" text="Name">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="blobName" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn fx:id="uploadDate" prefWidth="75.0" text="Upload date">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="uploadDate" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn fx:id="size" prefWidth="75.0" text="Size">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="size" />
+                       </cellValueFactory>
+                   </TableColumn>
+               </columns>
+            </TableView>
+         </children></AnchorPane>
+  </items>
+</SplitPane>

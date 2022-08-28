@@ -2,6 +2,14 @@ package pl.rawblob.interfaces.services;
 
 import java.net.Socket;
 
+/**
+ * ClientService interface
+ */
 public interface IClientService {
-    void Manage(Socket socket);
+
+    /**
+     * Manages new client
+     * @param socket connected socket
+     */
+    void manage(Socket socket);
 }

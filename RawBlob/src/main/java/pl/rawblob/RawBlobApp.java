@@ -3,9 +3,11 @@ package pl.rawblob;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import pl.rawblob.interfaces.services.INetworkService;
 
+/**
+ * RawBlobApp class
+ */
 public class RawBlobApp
 {
     public static void main( String[] args )

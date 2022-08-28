@@ -1,8 +1,12 @@
 package pl.rawblob.interfaces.services;
 
-import java.net.Socket;
-
+/**
+ * NetworkService interface
+ */
 public interface INetworkService {
+    /**
+     * Just listener
+     */
     void listen();
 
 }
