@@ -1,26 +1,17 @@
 package pl.rawblob.services;
 
-import org.reflections.Reflections;
-import org.reflections.scanners.FieldAnnotationsScanner;
-import org.reflections.scanners.Scanners;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.rawblob.annotations.Command;
-import pl.rawblob.dtos.MessageDto;
 import pl.rawblob.interfaces.services.ICommandService;
 import pl.rawblob.interfaces.services.azure.IBlobService;
-import pl.rawblob.models.Client;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import pl.rawblob.model.Client;
+import pl.rawblob.dtos.Message;
 
-import static org.reflections.scanners.Scanners.MethodsAnnotated;
-
+/**
+ * CommandService interface
+ */
 @Component
 public class CommandService implements ICommandService {
 
@@ -29,24 +20,34 @@ public class CommandService implements ICommandService {
     @Autowired
     private IBlobService blobService;
 
+    /**
+     * Parses command
+     * @implSpec Separates command by space then uses first element of input to execute command.
+     * @implNote It could be done using reflection with making this class more generic.
+     * @param command command to be parsed
+     * @param currentClient connected client
+     * @return
+     */
     @Override
-    public Object Parser(String command, Client currentClient) {
+    public Object parser(String command, Client currentClient) {
         LOGGER.info("Got "+ command);
         String[] arguments = command.split(" ");
 
         switch(arguments[0]){
             case "List":
-                return blobService.GetBlobs();
+                return blobService.getBlobs();
             case "Delete":
-                blobService.DeleteBlob(arguments[1]);
-                return new MessageDto("Deleted");
+                blobService.deleteBlob(arguments[1]);
+                return new Message("Deleted");
             case "Download":
-                return blobService.GetBlobByName(arguments[1]);
+                return blobService.getBlobByName(arguments[1], currentClient.getSocket());
             case "Upload":
-                blobService.UploadBlob(arguments[1], arguments[2]);
-                return new MessageDto("Created");
+                blobService.uploadBlob(arguments[1], currentClient.getSocket());
+                return new Message("Created");
+            case "Disconnect":
+                currentClient.setTerminated(true);
             default:
-                return new MessageDto("Command not found!");
+                return new Message("Command not found!");
         }
     }
 }

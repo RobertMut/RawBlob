@@ -1,7 +1,5 @@
 package pl.rawblob.services.azure;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
@@ -10,13 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.rawblob.interfaces.services.azure.IKeyVaultService;
 
+/**
+ * KeyVaultService class
+ */
 @Component
 public class KeyVaultService implements IKeyVaultService {
-
-
     private SecretClient secretClient;
     private String azureStorage;
 
+    /**
+     * Constructs KeyVaultService
+     * @param keyVaultUri uri to keyvault
+     */
     @Autowired
     public KeyVaultService(String keyVaultUri){
 
@@ -28,6 +31,10 @@ public class KeyVaultService implements IKeyVaultService {
         azureStorage = secretClient.getSecret("azureStorage").getValue();
     }
 
+    /**
+     * Gets azure storage connection string
+     * @return storage connection string
+     */
     @Override
     public String getAzureStorage() {
         return azureStorage;

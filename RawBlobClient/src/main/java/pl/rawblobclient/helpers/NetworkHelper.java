@@ -3,27 +3,39 @@ package pl.rawblobclient.helpers;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * NetworkHelper class
+ */
 public class NetworkHelper {
 
-    public static String send(Socket socket, String message){
+    /**
+     * Receives incoming string
+     * @param socket connected socket
+     * @return string from server
+     */
+    public static String receive(Socket socket){
         try {
-            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            var bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            StringBuilder sb = new StringBuilder();
+            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
 
-            dataOutputStream.writeUTF(message);
-            String line = bufferedReader.readLine();
+            String line = dataInputStream.readUTF();
 
-            while(line != null){
-                sb.append(line);
-                line = bufferedReader.readLine();
-            }
-
-            socket.close();
-            return sb.toString();
+            return line;
 
         } catch (IOException ioException){
             return null;
         }
+    }
+
+    /**
+     * Writes message to server
+     * @param socket connected socket
+     * @param message message to be sent
+     * @throws IOException If something with sending went wrong
+     */
+    public static void write(Socket socket, String message) throws IOException {
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+
+        dataOutputStream.write(message.getBytes());
+        dataOutputStream.flush();
     }
 }

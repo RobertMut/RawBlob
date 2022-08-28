@@ -1,7 +1,17 @@
 package pl.rawblob.interfaces.services;
 
-import pl.rawblob.models.Client;
+import pl.rawblob.model.Client;
 
+/**
+ * CommandService interface
+ */
 public interface ICommandService {
-    Object Parser(String command, Client currentClient);
+
+    /**
+     * Parses command
+     * @param command command to be parsed
+     * @param currentClient connected client
+     * @return object to be deserialized
+     */
+    Object parser(String command, Client currentClient);
 }

@@ -1,15 +1,38 @@
 package pl.rawblobclient.interfaces.services;
 
-import pl.rawblobclient.dtos.BlobsListDto;
-
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
+import java.util.List;
 
+/**
+ * CommandService interface
+ */
 public interface ICommandService {
-    BlobsListDto ListBlobs();
 
-    void DownloadBlob(String blobName);
+    /**
+     * Receives blob items
+     * @return LinkedHashMap List
+     */
+    List<LinkedHashMap<String, String>> listBlobs();
 
-    void Delete(String blobName);
+    /**
+     * Downloads blob to current directory
+     * @param blobName blob to be downloaded
+     */
+    void downloadBlob(String blobName);
 
-    void Upload(String filename, InputStream stream);
+    /**
+     * Deletes blob
+     * @param blobName
+     * @throws IOException
+     */
+    void delete(String blobName) throws IOException;
+
+    /**
+     * Uploads blob
+     * @param filename blob name
+     * @param stream file stream
+     */
+    void upload(String filename, InputStream stream);
 }

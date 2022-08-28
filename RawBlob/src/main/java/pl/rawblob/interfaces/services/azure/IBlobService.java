@@ -1,17 +1,41 @@
 package pl.rawblob.interfaces.services.azure;
 
-import pl.rawblob.annotations.Command;
-import pl.rawblob.dtos.BlobDto;
-import pl.rawblob.dtos.BlobsListDto;
-import pl.rawblob.entities.Blob;
+import pl.rawblob.dtos.BlobListItem;
+import pl.rawblob.dtos.Message;
 
+import java.net.Socket;
+import java.util.List;
+
+/**
+ * BlobService interface
+ */
 public interface IBlobService {
 
-    BlobsListDto GetBlobs();
+    /**
+     * Get list of blobs
+     * @return BlobListItem List
+     * @see BlobListItem
+     */
+    List<BlobListItem> getBlobs();
 
-    BlobDto GetBlobByName(String blobName);
+    /**
+     * Downloads blob
+     * @param blobName blobname to be downloaded
+     * @param socket connected socket
+     * @return Message when download was ended
+     */
+    Message getBlobByName(String blobName, Socket socket);
 
-    void DeleteBlob(String blobname);
+    /**
+     * Deletes blob
+     * @param blobname blobname to be deleted
+     */
+    void deleteBlob(String blobname);
 
-    void UploadBlob(String blobName, String base64Data);
+    /**
+     * Uploads blob
+     * @param blobName blobname to be uploaded
+     * @param socket connected socket
+     */
+    void uploadBlob(String blobName, Socket socket);
 }
