@@ -107,6 +107,6 @@ public class Bootstrapper {
     public INetworkService networkService() {
         LOGGER.info("Bean: INetworkService");
 
-        return new NetworkService();
+        return new NetworkService(this.listenPort, this.listenAddress, this.clientService());
     }
 }

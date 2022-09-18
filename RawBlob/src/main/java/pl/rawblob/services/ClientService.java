@@ -44,6 +44,7 @@ public class ClientService implements IClientService {
 
                 var response = commandService.parser(input, currentClient);
                 String serializedResponse = JsonHelper.Serialize(response);
+
                 NetworkHelper.write(socket, serializedResponse);
             }
         }

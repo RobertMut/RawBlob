@@ -1,5 +1,6 @@
 package pl.rawblob.helpers;
 
+import com.google.gson.internal.LinkedTreeMap;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.springframework.util.Assert;
@@ -15,9 +16,9 @@ public class JsonHelperTest extends TestCase {
 
     @Test
     public void testDeserialize() {
-        Message message = JsonHelper.Deserialize(sampleJson);
+        LinkedTreeMap message = JsonHelper.Deserialize(sampleJson);
 
-        Assert.hasText("sample message", message.Message);
+        Assert.hasText("sample message", message.get("Message").toString());
     }
 
     @Test

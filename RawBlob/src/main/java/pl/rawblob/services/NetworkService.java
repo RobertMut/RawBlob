@@ -32,7 +32,7 @@ public class NetworkService implements INetworkService {
      * @see ClientService
      */
     @Autowired
-    public void NetworkService(String listenPort, String listenAddress, IClientService clientService){
+    public NetworkService(String listenPort, String listenAddress, IClientService clientService){
         this.clientService = clientService;
         int port = Integer.parseInt(listenPort);
         this.address = new InetSocketAddress(listenAddress, port);

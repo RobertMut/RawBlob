@@ -95,6 +95,8 @@ public class BlobService implements IBlobService {
                 }
                 NetworkHelper.write(socket, JsonHelper.Serialize(new Blob(blobName, chunk)));
             }
+        } else {
+            NetworkHelper.write(socket, JsonHelper.Serialize(new Blob(blobName, data)));
         }
 
         return new Message("<EOF>");
